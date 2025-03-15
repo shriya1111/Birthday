@@ -4,7 +4,6 @@
     import Candle from './Candle.svelte';
     
     export let scene;
-    export let numberOfCandles = 23;
     export let isBlowing = false;
     export let blowingPower = 0;
     

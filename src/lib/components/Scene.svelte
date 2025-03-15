@@ -5,6 +5,11 @@
     import Cake from './Cake.svelte';
     import Balloon from './Balloon.svelte';
     
+    // Import all balloon images
+    const balloonImages = Array.from({ length: 14 }, (_, i) => 
+        `/images/image${i + 1}.jpeg`
+    );
+
     export let numberOfCandles = 5;
     export let numberOfBalloons = 10;
     
@@ -25,11 +30,11 @@
     function initBalloons() {
       balloons = [];
       for (let i = 0; i < numberOfBalloons; i++) {
-        const x = Math.random() * 100; // Percentage of screen width
-        const y = Math.random() * 100; // Start at random positions
-        const speed = 0.08 + Math.random() * 0.04; // Increased speed (4x faster)
-        const size = 80 + Math.random() * 40; // Random size between 80-120px
-        const imageIndex = Math.floor(Math.random() * 14) + 1; // Random image (1-14)
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const speed = 0.08 + Math.random() * 0.04;
+        const size = 80 + Math.random() * 40;
+        const imageIndex = Math.floor(Math.random() * 14) + 1;
         
         balloons.push({ 
           id: i, 
@@ -208,10 +213,12 @@
         return colors[imageIndex] || '#ff6b6b'; // Default to red if index not found
     }
 
-    // Add this function at the top of the script section
+    // Update the handleImageError function
     function handleImageError(event) {
         const img = event.target;
-        img.src = 'src/lib/assets/images/image1.jpeg';
+        const currentIndex = parseInt(img.src.match(/image(\d+)\.jpeg/)[1]);
+        const nextIndex = (currentIndex % 14) + 1;
+        img.src = `/images/image${nextIndex}.jpeg`;
     }
 </script>
   
@@ -235,7 +242,7 @@
                 <div class="balloon-border">
                     <div class="balloon-content">
                         <img 
-                            src="/src/lib/assets/images/image{balloon.imageIndex}.jpeg" 
+                            src={`/images/image${balloon.imageIndex}.jpeg`}
                             alt="balloon {balloon.imageIndex}"
                             class="balloon-image"
                             on:error={handleImageError}
